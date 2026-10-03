@@ -1,0 +1,95 @@
+- Khái niệm DOM: là viết tắt của Document Object Model. Được hiểu là một cấu trúc trừu tượng của text.\
+- Các đoạn mã HTML được gọi là HTML DOM và mỗi element trong HTML là các nodes của DOM.
+
+- DOM được dùng để làm gì?
+
+- SPA: Single Page Application. Là việc không yêu cầu load lại trang web trong quá trình sử dụng -> Client side redering.
+- MPA: Multi Page Application. Yêu cầu load lại trang trong quá trình sử dụng -> Server side redering.
+
+- Arrow function: Là 1 kiểu định nghĩa function nhưng ko cần dùng đến từ khóa function. Cú pháp sẽ là:
+	// Tạo 1 const:
+	const doSomething = (a, b) => {
+		block code
+	} // Ở đây a và b là các parameter.
+	// Hoặc có cách difine function khác:
+	const doSomething = (a, b) => (giá trị trả về)
+	// Với cách viết này, sẽ ko sử dụng {} mà sẽ return về thẳng giá trị mình muốn.
+	// Nếu muốn return về 1 object thì phải đặt object đó trong ().
+
+- Enhanced object literal: Hiểu nôm na là cách định nghĩa 1 object ngắn gọn hơn. Có 3 cách định nghĩa:
+	1: có 1 biến var a
+	obj = {
+		// key và value trùng tên nhau thì chỉ cần liệt kê tên biến
+		a
+	}
+- React ES6 {
+	- Classes {
+		- Đây là một loại function. Nhưng thay vì dùng keywork "function" thì chúng ta sử dung "class"
+		- Các thuộc tính sẽ được gán bên trong method "constructor"
+		+ Note: Cách đặt tên của Classes sẽ khác với function. Chúng ta sẽ bắt đầu với chũ hoa.
+		*Sample {
+			class Car {
+  				constructor(name) {
+    				this.brand = name;
+  				}
+			}
+			const mycar = new Car("Ford")
+			- Với brand là thuộc tính của class Car và constructor sẽ được gọi tự động khi khởi tạo class.
+		}
+		- Method trong classes {
+			
+		}
+	}
+}
+- Khái niệm JSX {
+	- Là viết tắt của javascript XML. Nó là một template languges nhưng lại mang hấu hết thuộc tính của js. Nó cho phép xây dụng các đoạn code HTML trong React.
+	- JSX giúp tạo ra các React element.
+}
+- Gán một biểu thức trong JSX {
+	- Sử dụng {} để gán một biến hoặc 1 biểu thức trong JSX
+}
+- JSX là một function {
+	Thực chất JSX là một function  của javascript. Chúng ta có thể gọi JSX bất cứ nơi nào.
+}
+- Chỉ định attribute với JSX {
+	- Chúng ta có thể chỉ định attribute bằng việc khai báo một const.
+	- Nên dùng "" cho String và {} cho biến hoặc function.
+}
+- Phần tử con trong JSX {
+	- Nếu chỉ có một phần tử thì chỉ cần để trong thẻ < />
+	- Trường hợp có nhiều phần tử trong một tags, thì chúng ta nên bọc nó trong 1 tags parent
+	- Ví dụ:
+		//Đúng cú pháp
+		//Phải bọc nó bằng một tags
+		const element = (
+  			<div>
+    			<h1>Hello</h1>
+    			<p>Welcome to Freetuts</p>
+ 	 		</div>
+		);
+		//Viết sai
+		//Các phần từ không được bọc
+		const element = (
+    		<h1>Hello</h1>
+   			<p>Welcome to Freetuts</p>
+		);
+}
+- JSX Object {
+	- Chúng ta sử dụng React.creatElement() để compile 1 JSX Object thành 1 JSX thông thường.
+	- Cú pháp:
+		const element = React.createElement(
+  			"p",
+ 		 	{ className: "welcome" },
+  			"Welcome to Freetuts.net!"
+		);
+		const element = <p className="welcome">Welcome to Freetuts.net!</p>
+	- Hoặc kiểu tường minh hớn:
+		const element = {
+  			type: "p",
+  			props: {
+    			className: "welcome",
+    			children: "Welcome to Freetuts.net!"
+  			}
+		};
+		const element = <p className="welcome">Welcome to Freetuts.net!</p>;
+}
