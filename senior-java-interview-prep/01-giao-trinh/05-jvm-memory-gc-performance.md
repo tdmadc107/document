@@ -1476,10 +1476,11 @@ Phần này viết dưới dạng **runbook** — làm theo từng bước khi s
 top -c                         # hoặc kubectl top pod
 # 2. Thread nào trong JVM ăn CPU?
 top -H -p <pid>                # ghi lại TID (thập phân) của các thread top
-printf '%x\n' <tid>            # đổi sang hex, ví dụ 4a3f
-# 3. Thread dump (3 lần, cách 5 giây) và tìm nid=0x4a3f
+printf '%x\n' <tid>            # JDK 8/11/17 in nid dạng hex (nid=0x4a3f) → cần đổi sang hex
+# 3. Thread dump (3 lần, cách 5 giây) và tìm thread theo nid
 jcmd <pid> Thread.print -l > td1.txt ; sleep 5 ; jcmd <pid> Thread.print -l > td2.txt
-grep -A 30 'nid=0x4a3f' td1.txt
+grep -A 30 'nid=0x4a3f' td1.txt  # JDK 8/11/17
+grep -A 30 'nid=19007 ' td1.txt  # JDK 21 in nid dạng thập phân → dùng thẳng TID từ top -H
 # 4. Hoặc nhanh và chính xác hơn: profile 30s
 ./asprof -d 30 -e cpu -f cpu.html <pid>
 ```
@@ -1547,7 +1548,7 @@ Bài học: review mọi cache phải có bound + metric hit rate
 - Tiêu chí đạt: chỉ ra đúng thread và dòng code; ghi lại từng lệnh đã chạy.
 
 **Bài 14.2 — Regex thảm họa (Trung bình)**
-- Đề bài: Endpoint validate email dùng regex `^([a-zA-Z0-9]+)*@example\.com$`, gửi input `"aaaaaaaaaaaaaaaaaaaaaaaaaaaa!"`. Chẩn đoán CPU 100% bằng thread dump và async-profiler.
+- Đề bài: Endpoint validate email dùng regex `^([a-zA-Z0-9]+){1,64}@example\.com$`, gửi input `"aaaaaaaaaaaaaaaaaaaaaaaaaaaa!"`. Chẩn đoán CPU 100% bằng thread dump và async-profiler. So sánh thời gian với pattern `^([a-zA-Z0-9]+)*@example\.com$` trên cùng input.
 - Tiêu chí đạt: giải thích catastrophic backtracking; sửa regex (bỏ nested quantifier, dùng possessive quantifier/atomic group) và giới hạn độ dài input; chứng minh CPU bình thường.
 
 **Bài 14.3 — Diễn tập sự cố (Nâng cao)**
@@ -1557,7 +1558,7 @@ Bài học: review mọi cache phải có bound + metric hit rate
 <details>
 <summary>Gợi ý lời giải</summary>
 
-Bài 14.2: regex `([a-zA-Z0-9]+)*` có số cách chia chuỗi tăng theo cấp số mũ khi không khớp → backtracking O(2ⁿ). Thread dump nhiều lần đều thấy thread ở `java.util.regex.Pattern$Loop.match` / `Pattern$GroupTail.match` lặp lại sâu. Sửa: `^[a-zA-Z0-9]+@example\.com$` (bỏ nhóm lồng), hoặc `^(?>[a-zA-Z0-9]+)@example\.com$`; giới hạn độ dài input trước khi match (ví dụ ≤ 254 ký tự).
+Bài 14.2: regex `([a-zA-Z0-9]+){1,64}` có số cách chia chuỗi tăng theo cấp số mũ khi không khớp → backtracking O(2ⁿ) (mỗi ký tự thêm vào ≈ gấp đôi thời gian). Lưu ý: từ JDK 9, engine regex có memoization cho vòng lặp group `*`/`+` **không giới hạn**, nên ví dụ kinh điển `([a-zA-Z0-9]+)*` chạy < 1 ms trên JDK 17/21. Quantifier có giới hạn `{m,n}` và backreference không được tối ưu này, nên vẫn bị ReDoS (xem [Case 02](../04-case-study/02-cpu-100-percent.md)). Thread dump nhiều lần đều thấy thread ở `java.util.regex.Pattern$Loop.match` / `Pattern$GroupTail.match` lặp lại sâu. Sửa: `^[a-zA-Z0-9]+@example\.com$` (bỏ nhóm lồng), hoặc `^(?>[a-zA-Z0-9]+)@example\.com$`; giới hạn độ dài input trước khi match (ví dụ ≤ 254 ký tự).
 
 Bài 14.3 — dấu hiệu nhận biết nhanh:
 - Leak → live set sau GC tăng.

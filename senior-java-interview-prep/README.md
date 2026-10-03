@@ -9,8 +9,8 @@ Nguồn tham khảo chính là các sách PDF trong kho này (`Java/`, `Ebook IT
 |---|---|---|
 | [`01-giao-trinh/`](01-giao-trinh/) | Giáo trình lý thuyết, mỗi phần có bài tập thực hành + gợi ý lời giải, dự án mini và checklist cuối module | ✅ |
 | [`02-ke-hoach-on-tap.md`](02-ke-hoach-on-tap.md) | Kế hoạch ôn tập 12 tuần (và bản rút gọn 4 tuần) | ✅ |
-| `03-cau-hoi-phong-van/` | Bộ câu hỏi phỏng vấn kèm đáp án theo từng module | ⏳ đang soạn |
-| `04-case-study/` | Case study thực tế Senior thường gặp trên production | ⏳ đang soạn |
+| [`03-cau-hoi-phong-van/`](03-cau-hoi-phong-van/) | Bộ câu hỏi phỏng vấn kèm đáp án theo từng module (~900 câu) và câu hỏi hành vi | ✅ |
+| [`04-case-study/`](04-case-study/) | 18 case study production thực tế | ✅ |
 
 ## Lộ trình giáo trình
 
